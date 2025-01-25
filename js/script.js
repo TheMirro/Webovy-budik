@@ -9,6 +9,12 @@ class Alarm {
     toHTML(index) {
         return `
             <li>
+                <div class="alarm-switch">
+                    <label class="switch">
+                        <input type="checkbox" ${this.enabled ? 'checked' : ''} onchange="app.toggleAlarm(${index})">
+                    <span class="slider ${this.enabled ? 'enabled' : 'disabled'}"></span>
+                    </label>
+                </div>
                 <span>${this.name} (${this.time})</span>
                 <div class="alarm-actions">
                     <button onclick="app.deleteAlarm(${index})">Smazat</button>
@@ -66,6 +72,11 @@ class AlarmApp {
         this.storage.setItem('alarms', JSON.stringify(this.alarms));
     }
 
+    toggleAlarm(index) {
+        this.alarms[index].enabled = !this.alarms[index].enabled;
+        this.renderAlarms();
+    }
+
     renderAlarms() {
         const alarmList = document.getElementById('alarm-list');
         alarmList.innerHTML = '';
@@ -103,7 +114,7 @@ class AlarmApp {
             if (alarm.enabled && alarm.time === currentTime) {
                 const alarmSound = document.getElementById('alarm-sound');
                 alarmSound.loop = true;
-                alarmSound.volume = 0.1;
+                alarmSound.volume = 0.05;
                 alarmSound.play();
     
                 const modal = document.getElementById('alarm-modal');

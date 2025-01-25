@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Budik</title>
+    <title>Webový Budík</title>
+    <link rel="shortcut icon" href="data/favicon.png" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,7 +13,7 @@
 
         <div id="login-screen">
             <div class="form-group">
-                <label for="username">Uživatelské jméno</label>
+                <label class="instructions" for="username">Uživatelské jméno</label>
                 <input type="text" id="username" placeholder="Zadejte své jméno">
             </div>
             <button id="login-btn">Přihlásit se</button>
@@ -23,12 +24,12 @@
             <h2>Přihlášen uživatel <span id="welcome-user"></span></h2>
 
             <div class="form-group">
-                <label for="alarm-time">Nastavit čas budíku</label>
+                <label class="instructions" for="alarm-time">Nastavit čas budíku</label>
                 <input type="time" id="alarm-time">
             </div>
 
             <div class="form-group">
-                <label for="alarm-name">Název budíku</label>
+                <label class="instructions" for="alarm-name">Název budíku</label>
                 <input type="text" id="alarm-name" placeholder="Zadejte název budíku">
             </div>
 
