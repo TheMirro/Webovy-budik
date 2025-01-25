@@ -98,18 +98,29 @@ class AlarmApp {
     checkAlarms() {
         const now = new Date();
         const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-
+    
         this.alarms.forEach(alarm => {
             if (alarm.enabled && alarm.time === currentTime) {
-                let alarmInterval = setInterval(() => {
-                    document.getElementById('alarm-sound').play();
-                    if (confirm(`${alarm.name}`)) {
-                        clearInterval(alarmInterval);
-                    }
-                }, 1300); // Adjust the interval time as needed
+                const alarmSound = document.getElementById('alarm-sound');
+                alarmSound.loop = true;
+                alarmSound.volume = 0.1;
+                alarmSound.play();
+    
+                const modal = document.getElementById('alarm-modal');
+                const alarmName = document.getElementById('alarm-name');
+                const closeModal = document.getElementById('close-modal');
+    
+                alarmName.textContent = alarm.name;
+                modal.style.display = 'block';
+    
+                closeModal.onclick = function() {
+                    modal.style.display = 'none';
+                    alarmSound.pause();
+                    alarmSound.currentTime = 0;
+                };
             }
         });
-    }
+    }    
 }
 
 const app = new AlarmApp();

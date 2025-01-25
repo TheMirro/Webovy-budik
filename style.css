@@ -29,20 +29,24 @@ label {
     font-weight: bold;
 }
 
-input, button {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    margin-bottom: 10px;
+input{
+    width: calc(100% - 20px);
     border: 1px solid #ccc;
     border-radius: 5px;
 }
 
 button {
+    width: 100%;
     background-color: #007bff;
     color: #fff;
-    border: none;
     cursor: pointer;
+    border: none;
+}
+
+input, button {
+    padding: 10px;
+    font-size: 16px;
+    margin-bottom: 10px;  
 }
 
 button:hover {
@@ -66,7 +70,37 @@ button:hover {
 }
 
 .alarm-actions button {
-    margin-left: 5px;
+    margin: auto    ;
     width: auto;
     padding: 5px 10px;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.close-button {
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
 }
