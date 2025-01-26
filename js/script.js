@@ -1,9 +1,9 @@
-// Třída reprezentující jednotlivý budík
+// Třída reprezentující jednotlivé budíky
 class Alarm {
     constructor(id, name, time, enabled = true) {
-        this.id = id; // Unikátní ID budíku
+        this.id = id; // Unikátní identifikátor budíku
         this.name = name; // Název budíku
-        this.time = time; // Nastavený čas budíku
+        this.time = time; // Nastavený čas budíku (HH:MM formát)
         this.enabled = enabled; // Stav budíku (zapnuto/vypnuto)
     }
 }
@@ -28,9 +28,9 @@ class AlarmRenderer {
     }
 }
 
-// Pomocná třída pro práci s DOM
+// Pomocná třída pro práci s DOM (objektovým modelem dokumentu)
 class UIHelper {
-    // Nastaví text do HTML elementu podle ID
+    // Nastaví text konkrétnímu HTML elementu podle ID
     static setElementText(id, text) {
         document.getElementById(id).textContent = text;
     }
@@ -41,11 +41,11 @@ class UIHelper {
     }
 }
 
-// Hlavní třída aplikace spravující budíky
+// Hlavní třída aplikace, správa budíků a interakce s uživatelem.
 class AlarmApp {
     constructor() {
-        this.currentUser = null; // Jméno aktuálního uživatele
-        this.alarms = []; // Pole budíků
+        this.currentUser = null; // Jméno aktuálně přihlášeného uživatele
+        this.alarms = {}; // Pole instancí Alarm (reprezentující všechny budíky)
         this.storage = localStorage; // Uložiště (výchozí je localStorage)
         this.init(); // Inicializace aplikace
     }
@@ -78,7 +78,7 @@ class AlarmApp {
     // Režim hosta (používá sessionStorage)
     guest() {
         this.currentUser = 'Host';
-        this.storage = sessionStorage; // Nasavení uložiště na sessionStorage
+        this.storage = sessionStorage; // Nastavení uložiště na sessionStorage
         this.storage.clear(); // Vymazaní dat z localStorage při obnovení stránky
 
         // Přepnutí na hlavní obrazovku
@@ -140,7 +140,7 @@ class AlarmApp {
         this.renderAlarms(); // Aktualizace zobrazení budíků
     }
 
-    // Kontrola budíků a spuštění notifikací
+    // Pravidelná kontrola budíků a spuštění notifikací
     checkAlarms() {
         const now = new Date();
         const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`; // Aktuální čas ve formátu HH:MM
@@ -152,7 +152,7 @@ class AlarmApp {
         });
     }
 
-    // Zobrazí notifikaci budíku
+    // Spustí zvuk a zobrazí modal s informací o budíku
     notifyAlarm(alarm) {
         const alarmSound = document.getElementById('alarm-sound'); // Načtení zvuku pro budík
         alarmSound.loop = true;
