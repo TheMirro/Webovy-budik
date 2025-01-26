@@ -64,7 +64,7 @@ class AlarmApp {
         if (!username) return alert('Zadejte platné uživatelské jméno.');
 
         this.currentUser = username;
-        this.storage = localStorage; // Uložit data do localStorage
+        this.storage = localStorage; // Nastavení uložiště na localStorage
         this.storage.setItem('username', username);
 
         // Přepnutí na hlavní obrazovku
@@ -78,8 +78,8 @@ class AlarmApp {
     // Režim hosta (používá sessionStorage)
     guest() {
         this.currentUser = 'Host';
-        this.storage = sessionStorage; // Uložit data do sessionStorage
-        this.storage.clear(); // Vymazat data pro nové sezení
+        this.storage = sessionStorage; // Nasavení uložiště na sessionStorage
+        this.storage.clear(); // Vymazaní dat z localStorage při obnovení stránky
 
         // Přepnutí na hlavní obrazovku
         UIHelper.toggleDisplay('login-screen', false);
@@ -91,8 +91,8 @@ class AlarmApp {
 
     // Načtení budíků z uložiště
     loadAlarms() {
-        const savedAlarms = JSON.parse(this.storage.getItem('alarms')) || []; // Načte uložené budíky
-        this.alarms = savedAlarms.map(a => new Alarm(a.id, a.name, a.time, a.enabled)); // Obnoví instanci Alarm
+        const savedAlarms = JSON.parse(this.storage.getItem('alarms')) || []; // Načtení uložených budíků
+        this.alarms = savedAlarms.map(a => new Alarm(a.id, a.name, a.time, a.enabled)); // Obnovení instanci Alarm
         this.renderAlarms(); // Aktualizace zobrazení budíků
     }
 
@@ -103,42 +103,41 @@ class AlarmApp {
 
     // Přepnutí stavu budíku (zapnuto/vypnuto)
     toggleAlarm(index) {
-        this.alarms[index].enabled = !this.alarms[index].enabled; // Přepne stav
-        this.saveAlarms(); // Uloží změny
-        this.renderAlarms(); // Aktualizuje zobrazení
+        this.alarms[index].enabled = !this.alarms[index].enabled; // Přepnutí stavu
+        this.saveAlarms(); // Uložení budíku
+        this.renderAlarms(); // Aktualizace zobrazení budíků
     }
 
     // Vykreslení budíků do HTML
     renderAlarms() {
         const alarmList = document.getElementById('alarm-list');
-        alarmList.innerHTML = ''; // Vyčistí seznam budíků
+        alarmList.innerHTML = ''; // Vyčištění seznamu budíků
         this.alarms.forEach((alarm, index) => {
-            alarmList.innerHTML += AlarmRenderer.toHTML(alarm, index); // Přidá HTML budíku
+            alarmList.innerHTML += AlarmRenderer.toHTML(alarm, index); // Přidání HTML budíku
         });
     }
 
     // Přidání nového budíku
     addAlarm() {
-        const time = document.getElementById('alarm-time').value; // Načte čas
+        const time = document.getElementById('alarm-time').value; // Načtení čas
         const name = document.getElementById('alarm-name').value.trim() || `Budík${this.alarms.length + 1}`; // Výchozí název budíku
 
         if (!time) return alert('Zadejte čas budíku.'); // Validace času
 
         const newAlarm = new Alarm(Date.now(), name, time); // Vytvoří nový budík
-        this.alarms.push(newAlarm); // Přidá budík do pole
-        this.saveAlarms(); // Uloží budík
-        this.renderAlarms(); // Aktualizuje seznam budíků
-
-        // Vymaže vstupní pole
+        this.alarms.push(newAlarm); // Přidání budíku do pole
+        this.saveAlarms(); // Uložení budíku
+        this.renderAlarms(); // Aktualizace zobrazení budíků
+        // Vymazání vstupního pole
         document.getElementById('alarm-time').value = '';
         document.getElementById('alarm-name').value = '';
     }
 
     // Smazání budíku podle indexu
     deleteAlarm(index) {
-        this.alarms.splice(index, 1); // Odstraní budík
-        this.saveAlarms(); // Uloží změny
-        this.renderAlarms(); // Aktualizuje seznam
+        this.alarms.splice(index, 1); // Odstranění budíku
+        this.saveAlarms(); // Uložení budíku
+        this.renderAlarms(); // Aktualizace zobrazení budíků
     }
 
     // Kontrola budíků a spuštění notifikací
@@ -148,19 +147,19 @@ class AlarmApp {
 
         this.alarms.forEach(alarm => {
             if (alarm.enabled && alarm.time === currentTime) {
-                this.notifyAlarm(alarm); // Spustí notifikaci budíku
+                this.notifyAlarm(alarm); // Spuštění notifikaci budíku
             }
         });
     }
 
     // Zobrazí notifikaci budíku
     notifyAlarm(alarm) {
-        const alarmSound = document.getElementById('alarm-sound'); // Načte zvuk budíku
+        const alarmSound = document.getElementById('alarm-sound'); // Načtení zvuku pro budík
         alarmSound.loop = true;
-        alarmSound.volume = 0.05;
-        alarmSound.play(); // Spustí zvuk budíku
+        alarmSound.volume = 0.05; // Nastavení hlasitosti (které dost možná nefunguje :D)
+        alarmSound.play(); // Spuštění zvuku
 
-        // Zobrazí modal s informací o budíku
+        // Zobrazení modalu s informacemi o budíku
         const modal = document.getElementById('alarm-modal');
         const alarmMessage = document.getElementById('alarm-message');
         alarmMessage.textContent = `Budík (${alarm.name}) nastavený na ${alarm.time} se spustil!`;
